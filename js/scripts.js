@@ -28,6 +28,13 @@ buttonPlus.addEventListener('click', () => {
   display.textContent = displayValue;
 });
 
+const buttonMinus = document.querySelector('.button-minus');
+buttonMinus.addEventListener('click', () => {
+  operator = '-';
+  displayValue = displayValue + ' - ';
+  display.textContent = displayValue;
+});
+
 
 const buttonEquals = document.querySelector('.button-equals');
 buttonEquals.addEventListener('click', () => {
@@ -48,7 +55,7 @@ function add (value1, value2) {
 }
 
 function substract (value1, value2) {
-  let result = value1 - value2;
+  let result = parseInt(value1) - parseInt(value2);
   return result;
 }
 
