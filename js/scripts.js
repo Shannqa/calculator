@@ -35,6 +35,19 @@ buttonMinus.addEventListener('click', () => {
   display.textContent = displayValue;
 });
 
+const buttonMultiply = document.querySelector('.button-multiply');
+buttonMultiply.addEventListener('click', () => {
+  operator = '*';
+  displayValue = displayValue + ' * ';
+  display.textContent = displayValue;
+});
+
+const buttonDivide = document.querySelector('.button-divide');
+buttonDivide.addEventListener('click', () => {
+  operator = '/';
+  displayValue = displayValue + ' / ';
+  display.textContent = displayValue;
+});
 
 const buttonEquals = document.querySelector('.button-equals');
 buttonEquals.addEventListener('click', () => {
@@ -60,12 +73,12 @@ function substract (value1, value2) {
 }
 
 function multiply (value1, value2) {
-  let result = value1 * value2;
+  let result = parseInt(value1) * parseInt(value2);
   return result;
 }
 
 function divide (value1, value2) {
-  let result = value1 / value2;
+  let result = parseInt(value1) / parseInt(value2);
   return result;
 }
 
