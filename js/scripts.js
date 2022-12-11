@@ -5,15 +5,15 @@ display.textContent = displayValueZero;
 let displayValue = ''
 let storedValue1 = '';
 let storedValue2 = '';
-let operator;
+let operator = null;
 
 const buttonNumber = document.querySelectorAll('.button-number');
 buttonNumber.forEach((button) => {
   button.addEventListener('click', () => {
-    if (operator === undefined) {
+    if (operator === null) {
       storedValue1 = storedValue1 + button.textContent;
       displayValue = displayValue + button.textContent;
-    } else if (operator !== undefined) {
+    } else if (operator !== null) {
       storedValue2 = storedValue2 + button.textContent;
       displayValue = displayValue + button.textContent;
     }
@@ -34,6 +34,14 @@ buttonEquals.addEventListener('click', () => {
   display.textContent = operate (operator, storedValue1, storedValue2);
 });
 
+const buttonClear = document.querySelector('.button-clear');
+buttonClear.addEventListener('click', () => {
+  displayValue = '';
+  display.textContent = 0;
+  storedValue1 = '';
+  storedValue2 = '';
+  operator = null;
+})
 function add (value1, value2) {
   let result = parseInt(value1) + parseInt(value2);
   return result;
