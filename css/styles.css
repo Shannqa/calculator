@@ -17,15 +17,19 @@ body {
 
 .display {
   display: flex;
-  justify-content: right;
+  flex-direction: column;
+  align-items: flex-end;
   margin: 4px;
   padding: 4px;
-  font-size: 22px;
   border: 1px black solid;
 }
-
-.buttons {
-  
+.display-top {
+  font-size: 16px;
+  height: 1em;
+}
+.display-main {
+  font-size: 24px;
+  height: 1em;
 }
 
 button {
@@ -34,8 +38,4 @@ button {
   padding: 4px 8px;
   width: 40px;
   height: 40px;
-}
-
-.button-number {
-
 }
