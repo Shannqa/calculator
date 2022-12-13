@@ -26,9 +26,14 @@ buttonNumber.forEach((button) => {
         currentAction = 'numbers';
       break;
       case 'equals':
+        if (operator === null) {
+          display.textContent += button.textContent;
+          currentAction = 'numbers';
+        } else {
         display.textContent = '';
         display.textContent += button.textContent;
         currentAction = 'numbers';
+        }
       break;
     } 
   });
@@ -42,12 +47,22 @@ buttonPlus.addEventListener('click', () => {
       break;
     case 'add':
       break;
+    case 'equals':
+      currentAction = 'add';
+      operator = '+';
+      break;
     case 'numbers':
       if (storedValue1 === null) {
         operator = '+';
         storedValue1 = display.textContent;
-      displayTop.textContent += storedValue1 + ' ' + operator;
-      } else if (storedValue1 !== null && storedValue2 === null){
+        displayTop.textContent += storedValue1 + ' ' + operator;
+      } else if (operator === null && storedValue1 !== null && storedValue2 === null){
+        // in case: operation is run by pressing equals button, then a number button is pressed. which changes the displayed value, but the operator is still null from running the previous operation
+        currentAction = 'add';
+        operator = '+';
+        storedValue1 = display.textContent;
+        displayTop.textContent += storedValue1 + ' ' + operator;
+      } else if (operator !== null && storedValue1 !== null && storedValue2 === null){  
         storedValue2 = display.textContent;
         displayTop.textContent += ' ' + storedValue2 + ' ' + operator;
         display.textContent = operate(operator, storedValue1, storedValue2);
@@ -77,7 +92,7 @@ buttonEquals.addEventListener('click', () => {
       } else if (storedValue1 !== null && storedValue2 === null) {
         currentAction = 'equals';
         storedValue2 = display.textContent;
-        displayTop.textContent += ' ' + storedValue2 + ' ' + operator;
+        displayTop.textContent = '';
         display.textContent = operate (operator, storedValue1, storedValue2);
         storedValue1 = display.textContent;
         storedValue2 = null;
