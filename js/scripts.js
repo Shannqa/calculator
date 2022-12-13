@@ -21,6 +21,7 @@ buttonNumber.forEach((button) => {
         display.textContent += button.textContent;
       break;
       case 'add':
+      case 'minus':
         display.textContent = '';
         display.textContent += button.textContent;
         currentAction = 'numbers';
@@ -69,8 +70,45 @@ buttonPlus.addEventListener('click', () => {
         currentAction = 'add';
         storedValue1 = display.textContent;
         storedValue2 = null;
+        operator = '+';
       }
     currentAction = 'add';
+    break;
+  }
+});
+
+const buttonMinus = document.querySelector('.button-minus');
+buttonMinus.addEventListener('click', () => {
+  switch (currentAction) {
+    case 'ready':
+      break;
+    case 'minus':
+      break;
+    case 'equals':
+      currentAction = 'minus';
+      operator = '-';
+      break;
+    case 'numbers':
+      if (storedValue1 === null) {
+        operator = '-';
+        storedValue1 = display.textContent;
+        displayTop.textContent += storedValue1 + ' ' + operator;
+      } else if (operator === null && storedValue1 !== null && storedValue2 === null){
+        // in case: operation is run by pressing equals button, then a number button is pressed. which changes the displayed value, but the operator is still null from running the previous operation
+        currentAction = 'minus';
+        operator = '-';
+        storedValue1 = display.textContent;
+        displayTop.textContent += storedValue1 + ' ' + operator;
+      } else if (operator !== null && storedValue1 !== null && storedValue2 === null){  
+        storedValue2 = display.textContent;
+        displayTop.textContent += ' ' + storedValue2 + ' ' + operator;
+        display.textContent = operate(operator, storedValue1, storedValue2);
+        currentAction = 'minus';
+        storedValue1 = display.textContent;
+        storedValue2 = null;
+        operator = '-';
+      }
+    currentAction = 'minus';
     break;
   }
 });
@@ -83,6 +121,8 @@ buttonEquals.addEventListener('click', () => {
     case 'ready':
       break;
     case 'add':
+      break;
+    case 'minus':
       break;
     case 'numbers':
       if (storedValue1 === null && storedValue2 === null) {
@@ -102,12 +142,7 @@ buttonEquals.addEventListener('click', () => {
     }
 });
 
-const buttonMinus = document.querySelector('.button-minus');
-buttonMinus.addEventListener('click', () => {
-  operator = '-';
-  displayValue = displayValue + ' - ';
-  display.textContent = displayValue;
-});
+
 
 const buttonMultiply = document.querySelector('.button-multiply');
 buttonMultiply.addEventListener('click', () => {
