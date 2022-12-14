@@ -27,14 +27,9 @@ buttonNumber.forEach((button) => {
         currentAction = 'numbers';
       break;
       case 'equals':
-        if (operator === null) {
-          display.textContent += button.textContent;
-          currentAction = 'numbers';
-        } else {
         display.textContent = '';
         display.textContent += button.textContent;
         currentAction = 'numbers';
-        }
       break;
     } 
   });
