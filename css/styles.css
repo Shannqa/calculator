@@ -4,6 +4,7 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
+  background-color: rgb(231 231 232);
 }
 
 .calculator {
@@ -11,17 +12,22 @@ body {
   flex-direction: column;
   justify-content: center;
   border: 1px black solid;
+  border-radius: 5px;
   margin-top: 50px;
-  padding: 4px;
+  padding: 14px 10px 14px 10px;
+  background-color: #bbbabc;
+  box-shadow: 3px 3px 3px #bbbabc;
 }
 
 .display {
   display: flex;
   flex-direction: column;
   align-items: flex-end;
-  margin: 4px;
+  margin: 4px 4px 12px 4px;
   padding: 4px;
   border: 1px black solid;
+  background-color: #f9f9f9;
+  box-shadow: 1px 1px 1px #7c7c7c;
 }
 .display-top {
   font-size: 16px;
@@ -38,4 +44,36 @@ button {
   padding: 4px 8px;
   width: 40px;
   height: 40px;
+  background-color: #989799;
+  border: 1px black solid;
+  box-shadow: 1px 1px 1px #7c7c7c; 
+}
+button:hover {
+  background-color: #8c8b8d;
+}
+
+button:active {
+  background-color: #7c7c7c;
+}
+
+.button-clear {
+  background-color: rgb(170, 80, 80);
+}
+.button-clear:hover {
+  background-color: rgb(146, 69, 69);
+}
+
+.button-clear:active {
+  background-color: rgb(131, 61, 61);
+}
+
+.button-equals {
+  background-color: rgb(123, 132, 182);
+}
+.button-equals:hover {
+  background-color: rgb(109, 117, 161);
+}
+
+.button-equals:active {
+  background-color: rgb(101, 108, 151);
 }
