@@ -23,6 +23,7 @@ buttonNumber.forEach((button) => {
       case 'add':
       case 'minus':
       case 'multiply':
+      case 'divide':
         display.textContent = '';
         display.textContent += button.textContent;
         currentAction = 'numbers';
@@ -145,9 +146,37 @@ buttonMultiply.addEventListener('click', () => {
 
 const buttonDivide = document.querySelector('.button-divide');
 buttonDivide.addEventListener('click', () => {
-  operator = '/';
-  displayValue = displayValue + ' / ';
-  display.textContent = displayValue;
+  switch (currentAction) {
+    case 'ready':
+    case 'divide':
+      break;
+    case 'equals':
+      currentAction = 'divide';
+      operator = '/';
+      break;
+    case 'numbers':
+      if (storedValue1 === null) {
+        operator = '/';
+        storedValue1 = display.textContent;
+        displayTop.textContent += storedValue1 + ' ' + operator;
+      } else if (operator === null && storedValue1 !== null && storedValue2 === null){
+        // in case: operation is run by pressing equals button, then a number button is pressed. which changes the displayed value, but the operator is still null from running the previous operation
+        currentAction = 'divide';
+        operator = '/';
+        storedValue1 = display.textContent;
+        displayTop.textContent += storedValue1 + ' ' + operator;
+      } else if (operator !== null && storedValue1 !== null && storedValue2 === null){  
+        storedValue2 = display.textContent;
+        displayTop.textContent += ' ' + storedValue2 + ' ' + operator;
+        display.textContent = operate(operator, storedValue1, storedValue2);
+        currentAction = 'divide';
+        storedValue1 = display.textContent;
+        storedValue2 = null;
+        operator = '/';
+      }
+    currentAction = 'divide';
+    break;
+  }
 });
 
 const buttonEquals = document.querySelector('.button-equals');
@@ -158,6 +187,7 @@ buttonEquals.addEventListener('click', () => {
     case 'add':
     case 'minus':
     case 'multiply':
+    case 'divide':
       break;
     case 'numbers':
       if (storedValue1 === null && storedValue2 === null) {
