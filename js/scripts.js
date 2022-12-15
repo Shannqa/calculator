@@ -216,6 +216,15 @@ buttonDelete.addEventListener('click', () => {
   }
 })
 
+const buttonDot = document.querySelector('.button-dot');
+buttonDot.addEventListener('click', () => {
+  if (display.textContent.includes('.')) {
+    return;
+  } else {
+    display.textContent += '.';
+    currentAction = 'numbers';
+  }
+});
 
 const buttonClear = document.querySelector('.button-clear');
 buttonClear.addEventListener('click', () => {
@@ -225,7 +234,8 @@ buttonClear.addEventListener('click', () => {
   storedValue1 = null;
   storedValue2 = null;
   operator = null;
-})
+});
+
 function add (value1, value2) {
   let result = parseInt(value1) + parseInt(value2);
   return result;
