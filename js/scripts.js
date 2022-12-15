@@ -207,8 +207,14 @@ buttonEquals.addEventListener('click', () => {
     }
 });
 
-
-
+const buttonDelete = document.querySelector('.button-delete');
+buttonDelete.addEventListener('click', () => {
+  if (display.textContent.length === 1) {
+    display.textContent = 0;
+  } else {
+    display.textContent = display.textContent.slice(0, -1);
+  }
+})
 
 
 const buttonClear = document.querySelector('.button-clear');
