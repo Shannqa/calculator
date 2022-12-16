@@ -237,27 +237,34 @@ buttonClear.addEventListener('click', () => {
 });
 
 function add (value1, value2) {
-  let result = parseInt(value1) + parseInt(value2);
-  return result;
+  let result = value1 + value2;
+  return result.round();
 }
 
 function substract (value1, value2) {
-  let result = parseInt(value1) - parseInt(value2);
-  return result;
+  let result = value1 - value2;
+  return result.round();
 }
 
 function multiply (value1, value2) {
-  let result = parseInt(value1) * parseInt(value2);
-  return result;
+  let result = value1 * value2;
+  return result.round();
 }
 
 function divide (value1, value2) {
-  let result = parseInt(value1) / parseInt(value2);
-  return result;
+  let result = value1 / value2;
+  return result.round();
+}
+/* Round the result to maximum of 6 decimal places */
+Number.prototype.round = function() {
+  const d = Math.pow(10, 6);
+  return Math.round((this + Number.EPSILON) * d) / d;
 }
 
 function operate (operator, value1, value2) {
-  
+  value1 = parseFloat(value1);
+  value2 = parseFloat(value2);
+
   if (operator === '+') {
     return add (value1, value2);
   } else if (operator === '-') {
