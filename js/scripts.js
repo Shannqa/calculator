@@ -7,6 +7,14 @@ let storedValue2 = null;
 let operator = null;
 let currentAction = 'ready';
 
+function divByZero () {
+  display.textContent = "No you don't!";
+  displayTop.textContent = '';
+  currentAction = 'ready';
+  storedValue1 = null;
+  storedValue2 = null;
+  operator = null;
+}
 
 const buttonNumber = document.querySelectorAll('.button-number');
 buttonNumber.forEach((button) => {
@@ -61,12 +69,16 @@ buttonPlus.addEventListener('click', () => {
         displayTop.textContent += storedValue1 + ' ' + operator;
       } else if (operator !== null && storedValue1 !== null && storedValue2 === null){  
         storedValue2 = display.textContent;
-        displayTop.textContent += ' ' + storedValue2 + ' ' + operator;
-        display.textContent = operate(operator, storedValue1, storedValue2);
-        currentAction = 'add';
-        storedValue1 = display.textContent;
-        storedValue2 = null;
-        operator = '+';
+        if (operator === "/" && parseInt(storedValue2) === 0) {
+          divByZero();
+        } else {
+          displayTop.textContent += ' ' + storedValue2 + ' ' + operator;
+          display.textContent = operate(operator, storedValue1, storedValue2);
+          currentAction = 'add';
+          storedValue1 = display.textContent;
+          storedValue2 = null;
+          operator = '+';
+        }
       }
     currentAction = 'add';
     break;
@@ -96,12 +108,16 @@ buttonMinus.addEventListener('click', () => {
         displayTop.textContent += storedValue1 + ' ' + operator;
       } else if (operator !== null && storedValue1 !== null && storedValue2 === null){  
         storedValue2 = display.textContent;
-        displayTop.textContent += ' ' + storedValue2 + ' ' + operator;
-        display.textContent = operate(operator, storedValue1, storedValue2);
-        currentAction = 'minus';
-        storedValue1 = display.textContent;
-        storedValue2 = null;
-        operator = '-';
+        if (operator === "/" && parseInt(storedValue2) === 0) {
+          divByZero();
+        } else {
+          displayTop.textContent += ' ' + storedValue2 + ' ' + operator;
+          display.textContent = operate(operator, storedValue1, storedValue2);
+          currentAction = 'minus';
+          storedValue1 = display.textContent;
+          storedValue2 = null;
+          operator = '-';
+        }
       }
     currentAction = 'minus';
     break;
@@ -132,12 +148,16 @@ buttonMultiply.addEventListener('click', () => {
         displayTop.textContent += storedValue1 + ' ' + operator;
       } else if (operator !== null && storedValue1 !== null && storedValue2 === null){  
         storedValue2 = display.textContent;
-        displayTop.textContent += ' ' + storedValue2 + ' ' + operator;
-        display.textContent = operate(operator, storedValue1, storedValue2);
-        currentAction = 'multiply';
-        storedValue1 = display.textContent;
-        storedValue2 = null;
-        operator = '*';
+        if (operator === "/" && parseInt(storedValue2) === 0) {
+          divByZero();
+        } else {
+          displayTop.textContent += ' ' + storedValue2 + ' ' + operator;
+          display.textContent = operate(operator, storedValue1, storedValue2);
+          currentAction = 'multiply';
+          storedValue1 = display.textContent;
+          storedValue2 = null;
+          operator = '*';
+        }
       }
     currentAction = 'multiply';
     break;
@@ -167,12 +187,16 @@ buttonDivide.addEventListener('click', () => {
         displayTop.textContent += storedValue1 + ' ' + operator;
       } else if (operator !== null && storedValue1 !== null && storedValue2 === null){  
         storedValue2 = display.textContent;
-        displayTop.textContent += ' ' + storedValue2 + ' ' + operator;
-        display.textContent = operate(operator, storedValue1, storedValue2);
-        currentAction = 'divide';
-        storedValue1 = display.textContent;
-        storedValue2 = null;
-        operator = '/';
+        if (operator === "/" && parseInt(storedValue2) === 0) {
+          divByZero();
+        } else {
+          displayTop.textContent += ' ' + storedValue2 + ' ' + operator;
+          display.textContent = operate(operator, storedValue1, storedValue2);
+          currentAction = 'divide';
+          storedValue1 = display.textContent;
+          storedValue2 = null;
+          operator = '/';
+        }
       }
     currentAction = 'divide';
     break;
@@ -197,11 +221,15 @@ buttonEquals.addEventListener('click', () => {
       } else if (storedValue1 !== null && storedValue2 === null) {
         currentAction = 'equals';
         storedValue2 = display.textContent;
-        displayTop.textContent = '';
-        display.textContent = operate (operator, storedValue1, storedValue2);
-        storedValue1 = display.textContent;
-        storedValue2 = null;
-        operator = null;
+        if (operator === "/" && parseInt(storedValue2) === 0) {
+          divByZero();
+        } else {
+          displayTop.textContent = '';
+          display.textContent = operate (operator, storedValue1, storedValue2);
+          storedValue1 = display.textContent;
+          storedValue2 = null;
+          operator = null;
+        }
       }
     break;
     }

@@ -18,7 +18,7 @@ main {
   justify-content: center;
   border: 1px black solid;
   width: 204px;
-  height: 306px;
+  height: 310px;
   border-radius: 5px;
   margin-top: 100px;
   padding: 14px 10px 14px 10px;
@@ -46,7 +46,7 @@ main {
 }
 .display-main {
   font-size: 24px;
-  height: 1em;
+  height: 26px;
   overflow: hidden;
 }
 
