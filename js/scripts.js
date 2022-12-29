@@ -16,6 +16,29 @@ function divByZero () {
   operator = null;
 }
 
+document.addEventListener('keydown', (event) => {
+  event.preventDefault();
+  if (event.key === '+') {
+    buttonPlus.click();
+  } else if (event.key === '-') {
+    buttonMinus.click();
+  } else if (event.key === '=' || event.key === 'Enter') {
+    buttonEquals.click();
+  } else if (event.key === '/') {
+    buttonDivide.click();
+  } else if (event.key === '*') {
+    buttonMultiply.click();
+  } else if (event.key === '.') {
+    buttonDot.click();
+  } else if (event.key === 'Backspace') {
+   buttonDelete.click();
+  } else if (event.key === 'c' || event.key === 'C') {
+    buttonClear.click();
+  } else if (!isNaN(event.key)) {
+    document.querySelector(`#num${event.key}`).click();
+  }
+});
+
 const buttonNumber = document.querySelectorAll('.button-number');
 buttonNumber.forEach((button) => {
   button.addEventListener('click', () => {
