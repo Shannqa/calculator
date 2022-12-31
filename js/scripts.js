@@ -55,6 +55,8 @@ buttonNumber.forEach((button) => {
       case 'minus':
       case 'multiply':
       case 'divide':
+      case 'power':
+      case 'root':
         display.textContent = '';
         display.textContent += button.textContent;
         currentAction = 'numbers';
@@ -78,6 +80,17 @@ buttonPlus.addEventListener('click', () => {
     case 'equals':
       currentAction = 'add';
       operator = '+';
+      break;
+    /* change the operator */
+    case 'minus':
+    case 'multiply':
+    case 'divide':
+    case 'power':
+    case 'root': 
+      currentAction = 'add';
+      operator = '+';
+      displayTop.textContent = displayTop.textContent.slice(0, -1);
+      displayTop.textContent += operator;
       break;
     case 'numbers':
       if (storedValue1 === null) {
@@ -117,6 +130,17 @@ buttonMinus.addEventListener('click', () => {
     case 'equals':
       currentAction = 'minus';
       operator = '-';
+      break;
+    /* change the operator */
+    case 'add':
+    case 'multiply':
+    case 'divide':
+    case 'power':
+    case 'root': 
+      currentAction = 'minus';
+      operator = '-';
+      displayTop.textContent = displayTop.textContent.slice(0, -1);
+      displayTop.textContent += operator;
       break;
     case 'numbers':
       if (storedValue1 === null) {
@@ -158,6 +182,17 @@ buttonMultiply.addEventListener('click', () => {
       currentAction = 'multiply';
       operator = '*';
       break;
+    /* change the operator */
+    case 'add':
+    case 'minus':
+    case 'divide':
+    case 'power':
+    case 'root': 
+      currentAction = 'multiply';
+      operator = '*';
+      displayTop.textContent = displayTop.textContent.slice(0, -1);
+      displayTop.textContent += operator;
+      break;
     case 'numbers':
       if (storedValue1 === null) {
         operator = '*';
@@ -197,6 +232,17 @@ buttonDivide.addEventListener('click', () => {
       currentAction = 'divide';
       operator = '/';
       break;
+    /* change the operator */
+    case 'add':
+    case 'minus':
+    case 'multiply':
+    case 'power':
+    case 'root': 
+      currentAction = 'divide';
+      operator = '/';
+      displayTop.textContent = displayTop.textContent.slice(0, -1);
+      displayTop.textContent += operator;
+      break;
     case 'numbers':
       if (storedValue1 === null) {
         operator = '/';
@@ -226,6 +272,57 @@ buttonDivide.addEventListener('click', () => {
   }
 });
 
+const buttonPower = document.querySelector('.button-power');
+buttonPower.addEventListener('click', () => {
+  switch (currentAction) {
+    case 'ready':
+    case 'power':
+      break;
+    case 'equals':
+      currentAction = 'power';
+      operator = '^';
+      break;
+    /* change the operator */
+    case 'add':
+    case 'minus':
+    case 'multiply':
+    case 'divide':
+    case 'root': 
+      currentAction = 'power';
+      operator = '^';
+      displayTop.textContent = displayTop.textContent.slice(0, -1);
+      displayTop.textContent += operator;
+      break;      
+    case 'numbers':
+      if (storedValue1 === null) {
+        operator = '^';
+        storedValue1 = display.textContent;
+        displayTop.textContent += storedValue1 + ' ' + operator;
+      } else if (operator === null && storedValue1 !== null && storedValue2 === null){
+        // in case: operation is run by pressing equals button, then a number button is pressed. which changes the displayed value, but the operator is still null from running the previous operation
+        currentAction = 'power';
+        operator = '^';
+        storedValue1 = display.textContent;
+        displayTop.textContent += storedValue1 + ' ' + operator;
+      } else if (operator !== null && storedValue1 !== null && storedValue2 === null){  
+        storedValue2 = display.textContent;
+        if (operator === "/" && parseInt(storedValue2) === 0) {
+          divByZero();
+        } else {
+          displayTop.textContent += ' ' + storedValue2 + ' ' + operator;
+          display.textContent = operate(operator, storedValue1, storedValue2);
+          currentAction = 'power';
+          storedValue1 = display.textContent;
+          storedValue2 = null;
+          operator = '^';
+        }  
+      }
+    currentAction = 'power';
+    break;
+  }
+});
+
+
 const buttonEquals = document.querySelector('.button-equals');
 buttonEquals.addEventListener('click', () => {
   switch (currentAction) {
@@ -235,6 +332,8 @@ buttonEquals.addEventListener('click', () => {
     case 'minus':
     case 'multiply':
     case 'divide':
+    case 'power':
+    case 'root':
       break;
     case 'numbers':
       if (storedValue1 === null && storedValue2 === null) {
@@ -306,6 +405,11 @@ function divide (value1, value2) {
   let result = value1 / value2;
   return result.round();
 }
+
+function power (value1, value2) {
+  let result = Math.pow(value1, value2);
+  return result.round();
+}
 /* Round the result to maximum of 6 decimal places */
 Number.prototype.round = function() {
   const d = Math.pow(10, 6);
@@ -324,6 +428,8 @@ function operate (operator, value1, value2) {
     return multiply (value1, value2);
   } else if (operator === '/') {
     return divide (value1, value2);
+  } else if (operator === '^') {
+    return power (value1, value2);
   } else {
     return 'Error';
   }
