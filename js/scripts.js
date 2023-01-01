@@ -5,6 +5,7 @@ display.textContent = '0';
 let storedValue1 = null;
 let storedValue2 = null;
 let operator = null;
+let root = false;
 let currentAction = 'ready';
 
 function divByZero () {
@@ -56,11 +57,15 @@ buttonNumber.forEach((button) => {
       case 'multiply':
       case 'divide':
       case 'power':
-      case 'root':
         display.textContent = '';
         display.textContent += button.textContent;
         currentAction = 'numbers';
       break;
+      case 'sqrt':
+        display.textContent += button.textContent;
+        currentAction = 'numbers';
+        root = true;
+        break;
       case 'equals':
         display.textContent = '';
         display.textContent += button.textContent;
@@ -86,13 +91,30 @@ buttonPlus.addEventListener('click', () => {
     case 'multiply':
     case 'divide':
     case 'power':
-    case 'root': 
       currentAction = 'add';
       operator = '+';
       displayTop.textContent = displayTop.textContent.slice(0, -1);
       displayTop.textContent += operator;
       break;
+    case 'sqrt':
+
+      currentAction = 'add';
+      operator = '+';
+      displayTop.textContent += ' = ' + display.textContent + ' ' + operator;
+      break;       
     case 'numbers':
+      if (root === true) { // numbers -> operator -> sqrt -> numbers -> operator
+        displayTop.textContent += ' ' + display.textContent;
+        storedValue2 = display.textContent.slice(1);
+        storedValue2 = operate('√', storedValue2);
+        display.textContent = operate(operator, storedValue1, storedValue2);
+        operator = '+';
+        displayTop.textContent += ' ' + operator;
+        storedValue1 = display.textContent;
+        currentAction = 'add';
+        storedValue2 = null;
+        root = false;
+      } else {
       if (storedValue1 === null) {
         operator = '+';
         storedValue1 = display.textContent;
@@ -104,10 +126,23 @@ buttonPlus.addEventListener('click', () => {
         storedValue1 = display.textContent;
         displayTop.textContent += storedValue1 + ' ' + operator;
       } else if (operator !== null && storedValue1 !== null && storedValue2 === null){  
-        storedValue2 = display.textContent;
-        if (operator === "/" && parseInt(storedValue2) === 0) {
+        if (operator === '√') {
+          // numbers1 -> + -> √ -> numbers2 -> +
+          storedValue2 = display.textContent.slice(1);
+          displayTop.textContent += ' √' + storedValue2;
+          storedValue2 = operate(operator, storedValue2); // first do √(numbers2)
+          currentAction = 'add';
+          operator = '+';
+          display.textContent = operate(operator, storedValue1, storedValue2); // then do numbers1 + √(numbers2)
+          displayTop.textContent += ' ' + operator;
+          storedValue1 = display.textContent;
+          storedValue2 = null;
+
+        } else if (operator === '/' && parseInt(storedValue2) === 0) {
+          storedValue2 = display.textContent;
           divByZero();
         } else {
+          storedValue2 = display.textContent;
           displayTop.textContent += ' ' + storedValue2 + ' ' + operator;
           display.textContent = operate(operator, storedValue1, storedValue2);
           currentAction = 'add';
@@ -118,7 +153,7 @@ buttonPlus.addEventListener('click', () => {
       }
     currentAction = 'add';
     break;
-  }
+  }}
 });
 
 const buttonMinus = document.querySelector('.button-minus');
@@ -136,13 +171,25 @@ buttonMinus.addEventListener('click', () => {
     case 'multiply':
     case 'divide':
     case 'power':
-    case 'root': 
+    case 'sqrt': 
       currentAction = 'minus';
       operator = '-';
       displayTop.textContent = displayTop.textContent.slice(0, -1);
       displayTop.textContent += operator;
       break;
     case 'numbers':
+      if (root === true) { // numbers -> operator -> sqrt -> numbers -> operator
+        displayTop.textContent += ' ' + display.textContent;
+        storedValue2 = display.textContent.slice(1);
+        storedValue2 = operate('√', storedValue2);
+        display.textContent = operate(operator, storedValue1, storedValue2);
+        operator = '-';
+        displayTop.textContent += ' ' + operator;
+        storedValue1 = display.textContent;
+        currentAction = 'minus';
+        storedValue2 = null;
+        root = false;
+      } else {
       if (storedValue1 === null) {
         operator = '-';
         storedValue1 = display.textContent;
@@ -154,10 +201,21 @@ buttonMinus.addEventListener('click', () => {
         storedValue1 = display.textContent;
         displayTop.textContent += storedValue1 + ' ' + operator;
       } else if (operator !== null && storedValue1 !== null && storedValue2 === null){  
-        storedValue2 = display.textContent;
-        if (operator === "/" && parseInt(storedValue2) === 0) {
+        if (operator === '√') {
+          // numbers1 -> - -> √ -> numbers2 -> -
+          storedValue2 = display.textContent.slice(1);
+          displayTop.textContent += ' √' + storedValue2;
+          storedValue2 = operate(operator, storedValue2); // first do √(numbers2)
+          currentAction = 'minus';
+          operator = '-';
+          display.textContent = operate(operator, storedValue1, storedValue2); // then do numbers1 + √(numbers2)
+          displayTop.textContent += ' ' + operator;
+          storedValue1 = display.textContent;
+          storedValue2 = null;
+        } else if (operator === "/" && parseInt(display.textContent) === 0) {
           divByZero();
         } else {
+          storedValue2 = display.textContent;
           displayTop.textContent += ' ' + storedValue2 + ' ' + operator;
           display.textContent = operate(operator, storedValue1, storedValue2);
           currentAction = 'minus';
@@ -168,7 +226,7 @@ buttonMinus.addEventListener('click', () => {
       }
     currentAction = 'minus';
     break;
-  }
+  }}
 });
 
 
@@ -187,13 +245,25 @@ buttonMultiply.addEventListener('click', () => {
     case 'minus':
     case 'divide':
     case 'power':
-    case 'root': 
+    case 'sqrt': 
       currentAction = 'multiply';
       operator = '*';
       displayTop.textContent = displayTop.textContent.slice(0, -1);
       displayTop.textContent += operator;
       break;
     case 'numbers':
+      if (root === true) { // numbers -> operator -> sqrt -> numbers -> operator
+        displayTop.textContent += ' ' + display.textContent;
+        storedValue2 = display.textContent.slice(1);
+        storedValue2 = operate('√', storedValue2);
+        display.textContent = operate(operator, storedValue1, storedValue2);
+        operator = '*';
+        displayTop.textContent += ' ' + operator;
+        storedValue1 = display.textContent;
+        currentAction = 'multiply';
+        storedValue2 = null;
+        root = false;
+      } else {
       if (storedValue1 === null) {
         operator = '*';
         storedValue1 = display.textContent;
@@ -205,10 +275,21 @@ buttonMultiply.addEventListener('click', () => {
         storedValue1 = display.textContent;
         displayTop.textContent += storedValue1 + ' ' + operator;
       } else if (operator !== null && storedValue1 !== null && storedValue2 === null){  
-        storedValue2 = display.textContent;
-        if (operator === "/" && parseInt(storedValue2) === 0) {
+        if (operator === '√') {
+          // numbers1 -> * -> √ -> numbers2 -> *
+          storedValue2 = display.textContent.slice(1);
+          displayTop.textContent += ' √' + storedValue2;
+          storedValue2 = operate(operator, storedValue2); // first do √(numbers2)
+          currentAction = 'multiply';
+          operator = '*';
+          display.textContent = operate(operator, storedValue1, storedValue2); // then do numbers1 * √(numbers2)
+          displayTop.textContent += ' ' + operator;
+          storedValue1 = display.textContent;
+          storedValue2 = null;
+        } else if (operator === "/" && parseInt(display.textContent) === 0) {
           divByZero();
         } else {
+          storedValue2 = display.textContent;
           displayTop.textContent += ' ' + storedValue2 + ' ' + operator;
           display.textContent = operate(operator, storedValue1, storedValue2);
           currentAction = 'multiply';
@@ -219,7 +300,7 @@ buttonMultiply.addEventListener('click', () => {
       }
     currentAction = 'multiply';
     break;
-  }
+  }}
 });
 
 const buttonDivide = document.querySelector('.button-divide');
@@ -237,13 +318,25 @@ buttonDivide.addEventListener('click', () => {
     case 'minus':
     case 'multiply':
     case 'power':
-    case 'root': 
+    case 'sqrt': 
       currentAction = 'divide';
       operator = '/';
       displayTop.textContent = displayTop.textContent.slice(0, -1);
       displayTop.textContent += operator;
       break;
     case 'numbers':
+      if (root === true) { // numbers -> operator -> sqrt -> numbers -> operator
+        displayTop.textContent += ' ' + display.textContent;
+        storedValue2 = display.textContent.slice(1);
+        storedValue2 = operate('√', storedValue2);
+        display.textContent = operate(operator, storedValue1, storedValue2);
+        operator = '/';
+        displayTop.textContent += ' ' + operator;
+        storedValue1 = display.textContent;
+        currentAction = 'divide';
+        storedValue2 = null;
+        root = false;
+      } else {
       if (storedValue1 === null) {
         operator = '/';
         storedValue1 = display.textContent;
@@ -255,10 +348,21 @@ buttonDivide.addEventListener('click', () => {
         storedValue1 = display.textContent;
         displayTop.textContent += storedValue1 + ' ' + operator;
       } else if (operator !== null && storedValue1 !== null && storedValue2 === null){  
-        storedValue2 = display.textContent;
-        if (operator === "/" && parseInt(storedValue2) === 0) {
+        if (operator === '√') {
+          // numbers1 -> / -> √ -> numbers2 -> /
+          storedValue2 = display.textContent.slice(1);
+          displayTop.textContent += ' √' + storedValue2;
+          storedValue2 = operate(operator, storedValue2); // first do √(numbers2)
+          currentAction = 'divide';
+          operator = '/';
+          display.textContent = operate(operator, storedValue1, storedValue2); // then do numbers1 / √(numbers2)
+          displayTop.textContent += ' ' + operator;
+          storedValue1 = display.textContent;
+          storedValue2 = null;
+        } else if (operator === "/" && parseInt(display.textContent) === 0) {
           divByZero();
         } else {
+          storedValue2 = display.textContent;
           displayTop.textContent += ' ' + storedValue2 + ' ' + operator;
           display.textContent = operate(operator, storedValue1, storedValue2);
           currentAction = 'divide';
@@ -269,7 +373,7 @@ buttonDivide.addEventListener('click', () => {
       }
     currentAction = 'divide';
     break;
-  }
+  }}
 });
 
 const buttonPower = document.querySelector('.button-power');
@@ -287,13 +391,25 @@ buttonPower.addEventListener('click', () => {
     case 'minus':
     case 'multiply':
     case 'divide':
-    case 'root': 
+    case 'sqrt': 
       currentAction = 'power';
       operator = '^';
       displayTop.textContent = displayTop.textContent.slice(0, -1);
       displayTop.textContent += operator;
       break;      
     case 'numbers':
+      if (root === true) { // numbers -> operator -> sqrt -> numbers -> operator
+        displayTop.textContent += ' ' + display.textContent;
+        storedValue2 = display.textContent.slice(1);
+        storedValue2 = operate('√', storedValue2);
+        display.textContent = operate(operator, storedValue1, storedValue2);
+        operator = '^';
+        displayTop.textContent += ' ' + operator;
+        storedValue1 = display.textContent;
+        currentAction = 'power';
+        storedValue2 = null;
+        root = false;
+      } else {
       if (storedValue1 === null) {
         operator = '^';
         storedValue1 = display.textContent;
@@ -305,10 +421,21 @@ buttonPower.addEventListener('click', () => {
         storedValue1 = display.textContent;
         displayTop.textContent += storedValue1 + ' ' + operator;
       } else if (operator !== null && storedValue1 !== null && storedValue2 === null){  
-        storedValue2 = display.textContent;
-        if (operator === "/" && parseInt(storedValue2) === 0) {
+        if (operator === '√') {
+          // numbers1 -> ^ -> √ -> numbers2 -> ^
+          storedValue2 = display.textContent.slice(1);
+          displayTop.textContent += ' √' + storedValue2;
+          storedValue2 = operate(operator, storedValue2); // first do √(numbers2)
+          currentAction = 'power';
+          operator = '^';
+          display.textContent = operate(operator, storedValue1, storedValue2); // then do numbers1 ^ √(numbers2)
+          displayTop.textContent += ' ' + operator;
+          storedValue1 = display.textContent;
+          storedValue2 = null;
+        } else if (operator === "/" && parseInt(display.textContent) === 0) {
           divByZero();
         } else {
+          storedValue2 = display.textContent;
           displayTop.textContent += ' ' + storedValue2 + ' ' + operator;
           display.textContent = operate(operator, storedValue1, storedValue2);
           currentAction = 'power';
@@ -319,9 +446,65 @@ buttonPower.addEventListener('click', () => {
       }
     currentAction = 'power';
     break;
-  }
+  }}
 });
 
+const buttonSqrt = document.querySelector('.button-sqrt');
+buttonSqrt.addEventListener('click', () => {
+  switch (currentAction) {
+    case 'ready':
+    case 'sqrt':
+      break;
+    case 'equals': //sqrt of the result of the previous equation
+      currentAction = 'sqrt';
+      operator = '√';
+      displayTop.textContent += operator + storedValue1;
+      display.textContent = operate(operator, storedValue1);
+      storedValue1 = display.textContent;
+      break;
+    case 'add':
+    case 'minus':
+    case 'multiply':
+    case 'divide':
+    case 'power': 
+      // number -> operator other than sqrt -> sqrt
+      currentAction = 'sqrt';
+      display.textContent = '√';
+      break;
+    case 'numbers': 
+      if (storedValue1 === null) { 
+        operator = '√';
+        storedValue1 = display.textContent;
+        displayTop.textContent += operator + storedValue1;
+        display.textContent = operate(operator, storedValue1);
+        currentAction = 'sqrt';
+        storedValue1 = display.textContent;
+      } else if (operator === null && storedValue1 !== null && storedValue2 === null){
+        // in case: operation is run by pressing equals button, then a number button is pressed. which changes the displayed value, but the operator is still null from running the previous operation
+        currentAction = 'sqrt';
+        operator = '√';
+        storedValue1 = display.textContent;
+        displayTop.textContent += storedValue1 + ' ' + operator;
+      } else if (operator !== null && storedValue1 !== null && storedValue2 === null){
+
+
+
+        storedValue2 = display.textContent;
+        if (operator === "/" && parseInt(storedValue2) === 0) {
+          divByZero();
+        } else {
+          displayTop.textContent += ' ' + storedValue2 + ' ' + operator;
+          display.textContent = operate(operator, storedValue1, storedValue2);
+          currentAction = 'sqrt';
+          storedValue1 = display.textContent;
+          storedValue2 = null;
+          operator = '√';
+        }  
+      }
+    currentAction = 'sqrt';
+    break;
+  }
+});
 
 const buttonEquals = document.querySelector('.button-equals');
 buttonEquals.addEventListener('click', () => {
@@ -333,7 +516,7 @@ buttonEquals.addEventListener('click', () => {
     case 'multiply':
     case 'divide':
     case 'power':
-    case 'root':
+    case 'sqrt':
       break;
     case 'numbers':
       if (storedValue1 === null && storedValue2 === null) {
@@ -410,6 +593,10 @@ function power (value1, value2) {
   let result = Math.pow(value1, value2);
   return result.round();
 }
+function sqrt (value1) {
+  let result = Math.sqrt(value1);
+  return result.round();
+}
 /* Round the result to maximum of 6 decimal places */
 Number.prototype.round = function() {
   const d = Math.pow(10, 6);
@@ -430,6 +617,8 @@ function operate (operator, value1, value2) {
     return divide (value1, value2);
   } else if (operator === '^') {
     return power (value1, value2);
+  } else if (operator === '√') {
+    return sqrt (value1);
   } else {
     return 'Error';
   }
