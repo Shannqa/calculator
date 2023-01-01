@@ -17,6 +17,14 @@ function divByZero () {
   operator = null;
 }
 
+function doRoot() {
+  displayTop.textContent += ' ' + display.textContent;
+  storedValue2 = display.textContent.slice(1);
+  storedValue2 = operate('√', storedValue2);
+  display.textContent = operate(operator, storedValue1, storedValue2);
+  root = false;
+}
+
 document.addEventListener('keydown', (event) => {
   event.preventDefault();
   if (event.key === '+') {
@@ -104,16 +112,12 @@ buttonPlus.addEventListener('click', () => {
       break;       
     case 'numbers':
       if (root === true) { // numbers -> operator -> sqrt -> numbers -> operator
-        displayTop.textContent += ' ' + display.textContent;
-        storedValue2 = display.textContent.slice(1);
-        storedValue2 = operate('√', storedValue2);
-        display.textContent = operate(operator, storedValue1, storedValue2);
+        doRoot();
         operator = '+';
         displayTop.textContent += ' ' + operator;
         storedValue1 = display.textContent;
         currentAction = 'add';
         storedValue2 = null;
-        root = false;
       } else {
       if (storedValue1 === null) {
         operator = '+';
@@ -179,16 +183,12 @@ buttonMinus.addEventListener('click', () => {
       break;
     case 'numbers':
       if (root === true) { // numbers -> operator -> sqrt -> numbers -> operator
-        displayTop.textContent += ' ' + display.textContent;
-        storedValue2 = display.textContent.slice(1);
-        storedValue2 = operate('√', storedValue2);
-        display.textContent = operate(operator, storedValue1, storedValue2);
+        doRoot();
         operator = '-';
         displayTop.textContent += ' ' + operator;
         storedValue1 = display.textContent;
         currentAction = 'minus';
         storedValue2 = null;
-        root = false;
       } else {
       if (storedValue1 === null) {
         operator = '-';
@@ -253,16 +253,12 @@ buttonMultiply.addEventListener('click', () => {
       break;
     case 'numbers':
       if (root === true) { // numbers -> operator -> sqrt -> numbers -> operator
-        displayTop.textContent += ' ' + display.textContent;
-        storedValue2 = display.textContent.slice(1);
-        storedValue2 = operate('√', storedValue2);
-        display.textContent = operate(operator, storedValue1, storedValue2);
+        doRoot();
         operator = '*';
         displayTop.textContent += ' ' + operator;
         storedValue1 = display.textContent;
         currentAction = 'multiply';
         storedValue2 = null;
-        root = false;
       } else {
       if (storedValue1 === null) {
         operator = '*';
@@ -326,16 +322,12 @@ buttonDivide.addEventListener('click', () => {
       break;
     case 'numbers':
       if (root === true) { // numbers -> operator -> sqrt -> numbers -> operator
-        displayTop.textContent += ' ' + display.textContent;
-        storedValue2 = display.textContent.slice(1);
-        storedValue2 = operate('√', storedValue2);
-        display.textContent = operate(operator, storedValue1, storedValue2);
+        doRoot();
         operator = '/';
         displayTop.textContent += ' ' + operator;
         storedValue1 = display.textContent;
         currentAction = 'divide';
         storedValue2 = null;
-        root = false;
       } else {
       if (storedValue1 === null) {
         operator = '/';
@@ -399,16 +391,11 @@ buttonPower.addEventListener('click', () => {
       break;      
     case 'numbers':
       if (root === true) { // numbers -> operator -> sqrt -> numbers -> operator
-        displayTop.textContent += ' ' + display.textContent;
-        storedValue2 = display.textContent.slice(1);
-        storedValue2 = operate('√', storedValue2);
-        display.textContent = operate(operator, storedValue1, storedValue2);
         operator = '^';
         displayTop.textContent += ' ' + operator;
         storedValue1 = display.textContent;
         currentAction = 'power';
         storedValue2 = null;
-        root = false;
       } else {
       if (storedValue1 === null) {
         operator = '^';
